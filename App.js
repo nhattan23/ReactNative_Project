@@ -1,20 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useEffect} from 'react'
+import Providers from './navigation'
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+
+const App = () => {
+  const [fontsLoaded] = useFonts({
+    "Lato-regular": require("./assets/fonts/Lato-Regular.ttf"),
+    "Kufam-SemiBoldItalic": require("./assets/fonts/Kufam SemiBold Italic.otf")
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, [])
+
+  if(!fontsLoaded) {
+    return undefined;
+  } else {
+    SplashScreen.hideAsync();
+  }
+
+  return <Providers/>;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
